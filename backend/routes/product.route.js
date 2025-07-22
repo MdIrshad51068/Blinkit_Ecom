@@ -1,13 +1,22 @@
 import express from "express";
 import isAuthenticated from "../middlewares/isAuthenticated.js";
-import {getAdminproducts, getAllproducts, getproductById, postproduct } from "../controllers/product.controller.js";
+import { singleUpload } from "../middlewares/multer.js";
+import {
+  postproduct,
+  getAllproducts,
+  getAdminproducts,
+  getproductById,
+} from "../controllers/product.controller.js";
 
 const router = express.Router();
 
-router.route("/post").post( isAuthenticated,postproduct);
-router.route("/get").get(isAuthenticated, getAllproducts);
-router.route("/getadminproducts").get(isAuthenticated, getAdminproducts);
-router.route("/get/:id").get(isAuthenticated, getproductById);
+// ✅ POST product with auth and image upload
+router.post("/post", isAuthenticated, singleUpload, postproduct);
+
+// ✅ Other product routes
+router.get("/get", isAuthenticated, getAllproducts);
+router.get("/getadminproducts", isAuthenticated, getAdminproducts);
+router.get("/get/:id", isAuthenticated, getproductById);
 
 export default router;
 
