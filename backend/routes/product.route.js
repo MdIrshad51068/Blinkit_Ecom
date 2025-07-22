@@ -4,7 +4,7 @@ import {getAdminproducts, getAllproducts, getproductById, postproduct } from "..
 
 const router = express.Router();
 
-router.route("/post").post( postproduct);
+router.route("/post").post( isAuthenticated,postproduct);
 router.route("/get").get(isAuthenticated, getAllproducts);
 router.route("/getadminproducts").get(isAuthenticated, getAdminproducts);
 router.route("/get/:id").get(isAuthenticated, getproductById);

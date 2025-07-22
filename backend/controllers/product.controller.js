@@ -5,10 +5,6 @@ import getDataUri from "../utils/datauri.js";
 
 // admin post krega product
 export const postproduct = async (req, res) => {
-
-  console.log("BODY:", req.body);
-console.log("FILE:", req.file);
-
     
     try {
         const { productName, description, price, category, stock} = req.body;
