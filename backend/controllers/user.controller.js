@@ -6,10 +6,10 @@ import cloudinary from "../utils/cloudinary.js";
 
 export const register = async (req, res) => {
     try {
-        const { firstname,lastname, email, phoneNumber, password, role } = req.body;
+        const { firstname,lastname, email , address , phoneNumber, password, role } = req.body;
          
-        if (!firstname || !lastname || !email || !phoneNumber || !password || !role) {
-            console.log(firstname , lastname ,email ,phoneNumber, password ,role);
+        if (!firstname || !lastname || !email || !address || !phoneNumber || !password || !role) {
+            console.log(firstname , lastname ,email,address ,phoneNumber, password ,role);
             return res.status(400).json({
                 message: "Something is missing",
                 success: false
@@ -36,6 +36,7 @@ export const register = async (req, res) => {
             password: hashedPassword,
             role,
             profile:{
+                address,
                 profilePhoto:cloudResponse.secure_url,
             }
         });
@@ -110,7 +111,7 @@ export const logout = async (req, res) => {
 }
 export const updateProfile = async (req, res) => {
     try {
-        const { firstname,lastname, phoneNumber, bio } = req.body;
+        const { firstname,lastname, phoneNumber, address } = req.body;
         
         const file = req.file;
         // cloudinary ayega idhar
@@ -132,7 +133,7 @@ export const updateProfile = async (req, res) => {
         if(firstname) user.firstname = firstname
         if(lastname) user.lastname = lastname
         if(phoneNumber)  user.phoneNumber = phoneNumber
-        if(bio) user.profile.bio = bio
+        if(address) user.profile.address = address
       
         // resume comes later here...
         if(cloudResponse){
@@ -148,7 +149,7 @@ export const updateProfile = async (req, res) => {
             firstname: user.firstname,
             lastname: user.lastname,
             phoneNumber: user.phoneNumber,
-            bio:user.bio,
+            bio:user.address,
             profile: user.profile
         }
 

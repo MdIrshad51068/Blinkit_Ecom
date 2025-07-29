@@ -21,7 +21,7 @@ const productSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-  Photo: {
+  photo: {
     type: String,
     default: ""
   },
@@ -30,7 +30,7 @@ const productSchema = new mongoose.Schema({
     ref: 'User',
     required: true
   },
-  cart: [
+  carts: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Cart'

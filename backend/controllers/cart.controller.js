@@ -1,9 +1,10 @@
 import { cart } from "../models/cart.model.js";
-import { product } from "../models/product.model.js";
+import { Product } from "../models/product.model.js";
 
 export const addtocart = async (req, res) => {
     try {
         const userId = req.id;
+        console.log("userId : ",userId);
         const productId = req.params.id;
         if (!productId) {
             return res.status(400).json({
@@ -12,7 +13,7 @@ export const addtocart = async (req, res) => {
             })
         };
         // check if the user has already applied for the job
-        const existingproduct = await cart.findOne({ product: productId, cart: userId });
+        const existingproduct = await cart.findOne({ product: productId, applicant: userId });
 
         if (existingproduct) {
             return res.status(400).json({
@@ -22,7 +23,7 @@ export const addtocart = async (req, res) => {
         }
 
         // check if the jobs exists
-        const product = await product.findById(productId);
+        const product = await Product.findById(productId);
         if (!product) {
             return res.status(404).json({
                 message: "product not found",
@@ -30,12 +31,12 @@ export const addtocart = async (req, res) => {
             })
         }
         // create a new application
-        const newProduct = await product.create({
-            job:productId,
+        const newcart = await cart.create({
+            product:productId,
             applicant:userId,
         });
 
-        product.cart.push(newProduct._id);
+        product.cart.push(newcart._id);
         await product.save();
         return res.status(201).json({
             message:"product added successfully.",
@@ -45,13 +46,18 @@ export const addtocart = async (req, res) => {
         console.log(error);
     }
 };
+
+
+
 export const getCartProducts = async (req,res) => {
     try {
         const userId = req.id;
-        const product = await product.find({applicant:userId}).sort({createdAt:-1}).populate({
-            path:'product',
+        const product = await cart.find({applicant:userId}).sort({createdAt:-1}).populate({
+            path:'Product',
             options:{sort:{createdAt:-1}}
         });
+        console.log("product : ",product);
+        
         if(!product){
             return res.status(404).json({
                 message:"No Product",
@@ -66,17 +72,16 @@ export const getCartProducts = async (req,res) => {
         console.log(error);
     }
 }
+
+
 // admin dekhega kitna user ne apply kiya hai
 export const getcustomerOfproducts = async (req,res) => {
     try {
         const productId = req.params.id;
-        const product = await product.findById(productId).populate({
-            path:'cart',
-            options:{sort:{createdAt:-1}},
-            populate:{
-                path:'user'
-            }
+        const product = await cart.findById(productId).sort({createdAt:-1}).populate({
+                path:'applicant'
         });
+
         if(!product){
             return res.status(404).json({
                 message:'product not found.',
@@ -91,6 +96,8 @@ export const getcustomerOfproducts = async (req,res) => {
         console.log(error);
     }
 }
+
+
 export const updateStatus = async (req,res) => {
     try {
         const {status} = req.body;
@@ -103,7 +110,7 @@ export const updateStatus = async (req,res) => {
         };
 
         // find the application by applicantion id
-        const product = await product.findOne({_id:productId});
+        const product = await cart.findOne({ _id: productId });
         if(!product){
             return res.status(404).json({
                 message:"product not found.",

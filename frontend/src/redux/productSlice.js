@@ -1,0 +1,43 @@
+import { createSlice } from "@reduxjs/toolkit";
+
+const productSlice = createSlice({
+    name:"product",
+    initialState:{
+        allProducts:[],
+        allAdminProducts:[],
+        singleProduct:null, 
+        searchProductByText:"",
+        allAppliedProducts:[],
+        searchedQuery:"",
+    },
+    reducers:{
+        // actions
+        setAllProducts:(state,action) => {
+            state.allProducts = action.payload;
+        },
+        setSingleProduct:(state,action) => {
+            state.singleProduct = action.payload;
+        },
+        setAllAdminProducts:(state,action) => {
+            state.allAdminProducts = action.payload;
+        },
+        setSearchProductByText:(state,action) => {
+            state.searchProductByText = action.payload;
+        },
+        setAllAppliedProducts:(state,action) => {
+            state.allAppliedProducts = action.payload;
+        },
+        setSearchedQuery:(state,action) => {
+            state.searchedQuery = action.payload;
+        }
+    }
+});
+export const {
+    setAllProducts, 
+    setSingleProduct, 
+    setAllAdminProducts,
+    setSearchProductByText, 
+    setAllAppliedProducts,
+    setSearchedQuery
+} = productSlice.actions;
+export default productSlice.reducer;

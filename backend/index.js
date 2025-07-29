@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 import connectDB from "./utils/db.js";
 import userRoute from "./routes/user.route.js";
 import productRoute from "./routes/product.route.js";
-// import cartRoute from "./routes/cart.route.js";
+import cartRoute from "./routes/cart.route.js";
 
 dotenv.config({});
 
@@ -30,7 +30,7 @@ const PORT = process.env.PORT || 8000;
 // api's
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/product", productRoute);
-// app.use("/api/v1/cart", cartRoute);
+app.use("/api/v1/cart", cartRoute);
 
 
 

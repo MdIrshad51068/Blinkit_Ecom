@@ -33,7 +33,7 @@ export const postproduct = async (req, res) => {
       category,
       stock: Number(stock),
       created_by: userId,
-      Photo: cloudResponse.secure_url,
+      photo: cloudResponse.secure_url,
     });
 
     return res.status(201).json({
@@ -51,63 +51,69 @@ export const postproduct = async (req, res) => {
 };
 // student k liye
 export const getAllproducts = async (req, res) => {
-    try {
-        const keyword = req.query.keyword || "";
-        const query = {
-            $or: [
-                { productName: { $regex: keyword, $options: "i" } },
-                { description: { $regex: keyword, $options: "i" } },
-            ]
-        };
-        const products = await product.find(query).sort({ createdAt: -1 });
-        if (!products) {
-            return res.status(404).json({
-                message: "products not found.",
-                success: false
-            })
-        };
-        return res.status(200).json({
-            products,
-            success: true
-        })
-    } catch (error) {
-        console.log(error);
-    }
+  try {
+    const keyword = req.query.keyword || "";
+    const query = {
+      $or: [
+        { productName: { $regex: keyword, $options: "i" } },
+        { description: { $regex: keyword, $options: "i" } },
+      ]
+    };
+    const products = await Product.find(query).sort({ createdAt: -1 });
+    if (!products) {
+      return res.status(404).json({
+        message: "products not found.",
+        success: false
+      })
+    };
+    return res.status(200).json({
+      products,
+      success: true
+    })
+  } catch (error) {
+    console.log(error);
+  }
 }
 // student
 export const getproductById = async (req, res) => {
-    try {
-        const productId = req.params.id;
-        const product = await product.findById(productId);
-        if (!product) {
-            return res.status(404).json({
-                message: "products not found.",
-                success: false
-            })
-        };
-        return res.status(200).json({ product, success: true });
-    } catch (error) {
-        console.log(error);
-    }
+  try {
+    const productId = req.params.id;
+    
+    const product = await Product.findById(productId);
+    console.log(product);
+    
+    if (!product) {
+      return res.status(404).json({
+        message: "products not found.",
+        success: false
+      })
+    };
+    return res.status(200).json({ product, success: true });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Server error while geting product.",
+      success: false,
+    });
+  }
 }
 // admin kitne job create kra hai abhi tk
 export const getAdminproducts = async (req, res) => {
-    try {
-        const adminId = req.id;
-        const products = await product.find({ created_by: adminId }).sort({
-            createdAt:-1
-        });
-        if (!products) {
-            return res.status(404).json({
-                message: "products not found.",
-                success: false
-            })
-        };
-        return res.status(200).json({
-            products,
-            success: true
-        })
-    } catch (error) {
-        console.log(error);
-    }
+  try {
+    const adminId = req.id;
+    const products = await Product.find({ created_by: adminId }).sort({
+      createdAt: -1
+    });
+    if (!products) {
+      return res.status(404).json({
+        message: "products not found.",
+        success: false
+      })
+    };
+    return res.status(200).json({
+      products,
+      success: true
+    })
+  } catch (error) {
+    console.log(error);
+  }
 }

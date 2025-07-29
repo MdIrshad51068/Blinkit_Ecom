@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const cartSchema = new mongoose.Schema({
     product:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'product',
+        ref:'Product',
         required:true
     },
     applicant:{
@@ -17,4 +17,4 @@ const cartSchema = new mongoose.Schema({
         default:'pending'
     }
 },{timestamps:true});
-export const cart  = mongoose.model("cart", cartSchema);
+export const cart  = mongoose.model("Cart", cartSchema);

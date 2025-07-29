@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
         required:true
     },
     profile:{
-        bio:{type:String},
+        address:{type:String},
         cart:{type:mongoose.Schema.Types.ObjectId, ref:'cart'}, 
         profilePhoto:{
             type:String,

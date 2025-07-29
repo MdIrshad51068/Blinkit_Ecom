@@ -14,7 +14,7 @@ const router = express.Router();
 router.post("/post", isAuthenticated, singleUpload, postproduct);
 
 // ✅ Other product routes
-router.get("/get", isAuthenticated, getAllproducts);
+router.get("/get", getAllproducts);
 router.get("/getadminproducts", isAuthenticated, getAdminproducts);
 router.get("/get/:id", isAuthenticated, getproductById);
 
