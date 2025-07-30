@@ -11,8 +11,8 @@ import { toast } from 'sonner';
 const Details = () => {
     const {singleProduct} = useSelector(store => store.product);
     const {user} = useSelector(store=>store.auth);
-    const isIntiallyApplied = singleProduct?.cart?.some(cart => cart.applicant === user?._id) || false;
-    
+    const isIntiallyApplied = singleProduct?.carts?.some(Cart => Cart.applicant === user?._id) || false;
+    console.log("hello",singleProduct?.cart?.some(Cart => Cart.applicant === user?._id))
     const [isApplied, setIsApplied] = useState(isIntiallyApplied);
 
     const params = useParams();
@@ -25,7 +25,7 @@ const Details = () => {
             
             if(res.data.success){
                 setIsApplied(true); // Update the local state
-                const updatedSingleProduct = {...singleProduct, cart:[...singleProduct.cart,{applicant:user?._id}]}
+                const updatedSingleProduct = {...singleProduct, carts:[...singleProduct.carts,{applicant:user?._id}]}
                 dispatch(setSingleProduct(updatedSingleProduct)); // helps us to real time UI update
                 toast.success(res.data.message);
 
@@ -41,10 +41,11 @@ const Details = () => {
             try {
                 const res = await axios.get(`${Product_API_END_POINT}/get/${productId}`,{withCredentials:true});
                 if(res.data.success){
+                    console.log(res.data.product);
                     dispatch(setSingleProduct(res.data.product));
-                    console.log(res.data);
-                    setIsApplied(res.data.product.carts.some(cart=>cart.applicant === user?._id)) // Ensure the state is in sync with fetched data
-                    console.log("hhh",res.data.product.carts.some(cart=>cart.applicant === user?._id));
+                    
+                    setIsApplied(res.data.product.carts.some(Cart=>Cart.applicant === user?._id)) // Ensure the state is in sync with fetched data
+                    console.log("hhh",res.data.product.carts.some(Cart=>Cart.applicant === user?._id));
 
                 }
             } catch (error) {

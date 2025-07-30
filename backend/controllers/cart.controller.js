@@ -36,7 +36,7 @@ export const addtocart = async (req, res) => {
             applicant:userId,
         });
 
-        product.cart.push(newcart._id);
+        product.carts.push(newcart._id);
         await product.save();
         return res.status(201).json({
             message:"product added successfully.",
