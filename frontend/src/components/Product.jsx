@@ -8,7 +8,6 @@ import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 
 const Product = ({ product }) => {
     const navigate = useNavigate();
-    // const jobId = "lsekdhjgdsnfvsdkjf";
 
     return (
         <div className='p-5 rounded-md shadow-xl bg-white border border-gray-100' style={{display:"flex",flexDirection:"column", alignItems:"center",justifyContent:"center"}}>

@@ -5,7 +5,7 @@ import { addtocart, getcustomerOfproducts, getCartProducts, updateStatus } from 
 const router = express.Router();
 
 router.route("/apply/:id").get(isAuthenticated, addtocart);
-router.route("/get").get(isAuthenticated, getCartProducts);
+router.route("/get").get(isAuthenticated, getCartProducts);//---
 router.route("/:id/applicants").get(isAuthenticated, getcustomerOfproducts);
 router.route("/status/:id/update").post(isAuthenticated, updateStatus);
  

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from './ui/carousel';
 import { Button } from './ui/button';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setSearchedQuery } from '@/redux/productSlice';
 
@@ -13,6 +13,8 @@ const category = [
     "pajama"
 ]
 
+
+
 const CategoryCarousel = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -21,6 +23,9 @@ const CategoryCarousel = () => {
         navigate("/browse");
     }
 
+const { user } = useSelector(store => store.auth);
+
+
     return (
         <div>
             <Carousel className="w-full max-w-xl mx-auto my-20">
@@ -28,7 +33,7 @@ const CategoryCarousel = () => {
                     {
                         category.map((cat, index) => (
                             <CarouselItem className="md:basis-1/3 lg-basis-1/3">
-                                <Button onClick={()=>searchJobHandler(cat)} variant="outline" className="rounded-full  bg-[#00802b] text-white">{cat}</Button>
+                                <Button onClick={() => { if (user) { searchJobHandler(cat) } else { navigate("/request") } }} variant="outline" className="rounded-full  bg-[#00802b] text-white">{cat}</Button>
                             </CarouselItem>
                         ))
                     }

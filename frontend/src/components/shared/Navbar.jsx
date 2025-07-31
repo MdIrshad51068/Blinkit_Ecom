@@ -47,15 +47,15 @@ const Navbar = () => {
                             ) : !user ? (
                                 <>
                                     <li><Link to="/">Home</Link></li>
-                                    <li><Link to="/request">Products</Link></li>
+                                    <li><Link to="/about">About</Link></li>
                                     <li><Link to="/request">Browse</Link></li>
                                 </>
                             ) : (
                                 <>
                                     <li><Link to="/">Home</Link></li>
-                                    <li><Link to="/products">Products</Link></li>
+                                    <li><Link to="/about">about</Link></li>
                                     <li><Link to="/browse">Browse</Link></li>
-                                    <li><Link to="/browse"><FontAwesomeIcon icon={faShoppingCart} /></Link></li>
+                                    <li><Link to="/cart"><FontAwesomeIcon icon={faShoppingCart} /></Link></li>
                                 </>
                             )
                         }

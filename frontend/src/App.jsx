@@ -2,20 +2,22 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Login from './components/auth/Login'
 import Signup from './components/auth/SignUp'
 import Home from './components/Home'
-import Products from './components/Products'
 import Browse from './components/Browse'
 import RequestPage from './components/RequestPage'
 import Buy from './components/Buy'
 import Details from './components/Details'
 // import Profile from './components/Profile'
-import Detail from './components/Details'
+// import Detail from './components/Details'
+import Cart from './components/Cart'
+import About from './components/About'
+import OwnerPage from './components/Owner/OwnerPage'
 // import Companies from './components/admin/Companies'
 // import CompanyCreate from './components/admin/CompanyCreate'
 // import CompanySetup from './components/admin/CompanySetup'
 // import AdminJobs from "./components/admin/AdminJobs";
 // import PostJob from './components/admin/PostJob'
 // import Applicants from './components/admin/Applicants'
-// import ProtectedRoute from './components/admin/ProtectedRoute'
+import ProtectedRoute from './components/Owner/ProtectedRoute'
 
 
 const appRouter = createBrowserRouter([
@@ -32,8 +34,8 @@ const appRouter = createBrowserRouter([
     element: <Signup />
   },
   {
-    path: "/products",
-    element: <Products />
+    path: "/about",
+    element: <About />
   },
   {
     path: "/browse",
@@ -51,15 +53,15 @@ const appRouter = createBrowserRouter([
     path: "/detail/:id",
     element: <Details/>
   },
-  // {
-  //   path: "/profile",
-  //   element: <Profile />
-  // },
+  {
+    path: "/cart",
+    element: <Cart />
+  },
   // // admin ke liye yha se start hoga
-  // {
-  //   path:"/admin/companies",
-  //   element: <ProtectedRoute><Companies/></ProtectedRoute>
-  // },
+  {
+    path:"/owner",
+    element: <ProtectedRoute><OwnerPage/></ProtectedRoute>
+  },
   // {
   //   path:"/admin/companies/create",
   //   element: <ProtectedRoute><CompanyCreate/></ProtectedRoute> 

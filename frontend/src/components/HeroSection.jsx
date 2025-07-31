@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Button } from './ui/button'
 import { Search } from 'lucide-react'
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 import { setSearchedQuery } from '@/redux/productSlice';
 import { useNavigate } from 'react-router-dom';
 
@@ -9,6 +9,9 @@ const HeroSection = () => {
     const [query, setQuery] = useState("");
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    const { user } = useSelector(store => store.auth);
+
 
     const searchProductandler = () => {
         dispatch(setSearchedQuery(query));
@@ -20,7 +23,7 @@ const HeroSection = () => {
             <div className='flex flex-col gap-5 my-10'>
                 <span className=' mx-auto px-4 py-2 rounded-full bg-gray-100 text-[#F83002] font-medium'>No. 1 Shoping Website</span>
                 <h1 className='text-5xl font-bold'>Search, Here To & <br /> Get Your <span className='text-[#00802b]'>Desire Products</span></h1>
-                <p>Discover a world of endless choices and unbeatable deals<br/>shop smarter, faster, and better with us</p>
+                <p>Discover a world of endless choices and unbeatable deals<br />shop smarter, faster, and better with us</p>
                 <div className='flex w-[40%] shadow-lg border border-gray-200 pl-3 rounded-full items-center gap-4 mx-auto'>
                     <input
                         type="text"
@@ -29,12 +32,18 @@ const HeroSection = () => {
                         className='outline-none border-none w-full'
 
                     />
-                    <Button onClick={searchProductandler} className="rounded-r-full bg-[#00802b]">
+                    <Button onClick={() => {
+                        if (user) {
+                            searchProductandler();
+                        } else {
+                            navigate("/request");
+                        }
+                    }} className="rounded-r-full bg-[#00802b]">
                         <Search className='h-5 w-5' />
                     </Button>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 
