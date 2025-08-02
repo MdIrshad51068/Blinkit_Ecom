@@ -41,8 +41,7 @@ const Navbar = () => {
                         {
                             user && user.role === 'owner' ? (
                                 <>
-                                    <li><Link to="/admin/companies">Home</Link></li>
-                                    <li><Link to="/admin/jobs">Products</Link></li>
+
                                 </>
                             ) : !user ? (
                                 <>
@@ -82,7 +81,14 @@ const Navbar = () => {
                                             <div className='flex flex-col gap-5'>
                                                 <h4 className='font-medium'>{user?.firstname} {user?.lastname}</h4>
 
-                                                <p className='text-sm text-muted-foreground'><span className='font-bold text-black'>Address: </span>{user?.profile?.address}</p>
+                                                <p className='text-sm text-muted-foreground'>
+                                                    {user && user.role === 'customer' && (
+                                                        <>
+                                                            <span className='font-bold text-black'>Address:</span> {user?.profile?.address}
+                                                        </>
+                                                    )}
+                                                </p>
+
                                             </div>
                                         </div>
                                         <div className='flex flex-col my-2 text-gray-600'>

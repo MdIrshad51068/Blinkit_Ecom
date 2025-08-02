@@ -79,8 +79,11 @@ export const getproductById = async (req, res) => {
   try {
     const productId = req.params.id;
 
-    const product = await Product.findById(productId);
-    console.log(product)
+    const product = await Product.findById(productId).populate({
+            path:'carts',
+            options:{sort:{createdAt:-1}}
+        });
+    console.log("ooooooooooo",product)
 
     if (!product) {
       return res.status(404).json({

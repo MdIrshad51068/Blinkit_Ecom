@@ -1,10 +1,10 @@
 import React from 'react'
 import { Badge } from './ui/badge'
 import { useNavigate } from 'react-router-dom'
-import { Avatar, AvatarImage } from './ui/avatar'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
-import { Button } from './ui/button';
+// import { Avatar, AvatarImage } from './ui/avatar'
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+// import { Button } from './ui/button';
 
 
 const LatestProductCards = ({ product }) => {
@@ -12,9 +12,13 @@ const LatestProductCards = ({ product }) => {
     return (
         <div onClick={() => navigate(`/detail/${product._id}`)} className='p-5 rounded-md shadow-xl bg-white border border-gray-100 cursor-pointer' style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }} >
             <div>
-                <Avatar className="cursor-pointer rounded-lg " style={{ height: "100px", width: "100%", objectfit: "cover" }}>
-                    <AvatarImage src={product.photo} alt="@shadcn" />
-                </Avatar>
+                <img
+                    src={product.photo}
+                    alt="Product"
+                    className="w-64 h-64 object-cover rounded-md"
+                    style={{ height: "20vh", width: "auto", padding: "10px", borderRadius: "20px" }}
+                />
+                
             </div>
             <div>
                 <h1 className='font-bold text-lg my-2'>{product?.productName}</h1>
@@ -26,7 +30,7 @@ const LatestProductCards = ({ product }) => {
                 <Badge className={'text-[#F83002] font-bold'} variant="ghost">{product?.category}</Badge>
 
             </div>
-            
+
 
         </div>
     )

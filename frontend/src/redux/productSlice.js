@@ -9,6 +9,7 @@ const productSlice = createSlice({
         searchProductByText:"",
         allAppliedProducts:[],
         searchedQuery:"",
+        count:"",
     },
     reducers:{
         // actions
@@ -29,6 +30,9 @@ const productSlice = createSlice({
         },
         setSearchedQuery:(state,action) => {
             state.searchedQuery = action.payload;
+        },
+        setCount:(state,action) => {
+            state.count = action.payload;
         }
     }
 });
@@ -38,6 +42,7 @@ export const {
     setAllAdminProducts,
     setSearchProductByText, 
     setAllAppliedProducts,
-    setSearchedQuery
+    setSearchedQuery,
+    setCount
 } = productSlice.actions;
 export default productSlice.reducer;

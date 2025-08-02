@@ -11,6 +11,9 @@ const cartSchema = new mongoose.Schema({
         ref:'User',
         required:true
     },
+    count:{
+        type:Number,
+    },
     status:{
         type:String,
         enum:['pending', 'delivered', 'cancel'],

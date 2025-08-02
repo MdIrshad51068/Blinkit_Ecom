@@ -1,31 +1,37 @@
 import React, { useEffect, useState } from 'react'
 import { Badge } from './ui/badge'
 import { Button } from './ui/button'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Cart_API_END_POINT, Product_API_END_POINT } from '@/utils/constant';
 import { setSingleProduct } from '@/redux/productSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'sonner';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+import Navbar from './shared/Navbar';
 
 const Details = () => {
-    const {singleProduct} = useSelector(store => store.product);
-    const {user} = useSelector(store=>store.auth);
-    const isIntiallyApplied = singleProduct?.carts?.some(Cart => Cart.applicant === user?._id) || false;
-    console.log("hello",singleProduct?.cart?.some(Cart => Cart.applicant === user?._id))
+    const { singleProduct } = useSelector(store => store.product);
+    const { user } = useSelector(store => store.auth);
+    const isIntiallyApplied = singleProduct.carts.some(Cart => Cart.applicant === user?._id) || false;
+    console.log("hello", singleProduct?.carts?.some(Cart => Cart.applicant === user?._id))
     const [isApplied, setIsApplied] = useState(isIntiallyApplied);
 
     const params = useParams();
     const productId = params.id;
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+
 
     const applyProductHandler = async () => {
         try {
-            const res = await axios.get(`${Cart_API_END_POINT}/apply/${productId}`, {withCredentials:true});
-            
-            if(res.data.success){
+            const res = await axios.get(`${Cart_API_END_POINT}/apply/${productId}`, { withCredentials: true });
+
+
+            if (res.data.success) {
                 setIsApplied(true); // Update the local state
-                const updatedSingleProduct = {...singleProduct, carts:[...singleProduct.carts,{applicant:user?._id}]}
+                const updatedSingleProduct = { ...singleProduct, carts: [...singleProduct.carts, { applicant: user?._id }] }
                 dispatch(setSingleProduct(updatedSingleProduct)); // helps us to real time UI update
                 toast.success(res.data.message);
 
@@ -36,54 +42,63 @@ const Details = () => {
         }
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         const fetchSingleProduct = async () => {
             try {
-                const res = await axios.get(`${Product_API_END_POINT}/get/${productId}`,{withCredentials:true});
-                if(res.data.success){
-                    console.log(res.data.product);
+                const res = await axios.get(`${Product_API_END_POINT}/get/${productId}`, { withCredentials: true });
+                if (res.data.success) {
+                    console.log("lllllllll", res.data.product);
                     dispatch(setSingleProduct(res.data.product));
-                    
-                    setIsApplied(res.data.product.carts.some(Cart=>Cart.applicant === user?._id)) // Ensure the state is in sync with fetched data
-                    console.log("hhh",res.data.product.carts.some(Cart=>Cart.applicant === user?._id));
+
+                    setIsApplied(res.data.product.carts.some(Cart => Cart.applicant === user?._id)) // Ensure the state is in sync with fetched data
+                    console.log("hhhhh", res.data.product.carts.some(Cart => Cart.applicant === user?._id));
 
                 }
             } catch (error) {
                 console.log(error);
             }
         }
-        fetchSingleProduct(); 
-    },[productId,dispatch, user?._id]);
+        fetchSingleProduct();
+    }, [productId, dispatch, user?._id]);
 
     return (
-        <div className='max-w-7xl mx-auto my-10'>
-            <div className='flex items-center justify-between'>
-                <div>
-                    <h1 className='font-bold text-xl'>{singleProduct?.productName}</h1>
-                    <div className='flex items-center gap-2 mt-4'>
-                        <Badge className={'text-blue-700 font-bold'} variant="ghost">{singleProduct?.productName} Positions</Badge>
-                        <Badge className={'text-[#F83002] font-bold'} variant="ghost">{singleProduct?.productName}</Badge>
-                        <Badge className={'text-[#7209b7] font-bold'} variant="ghost">{singleProduct?.productName}LPA</Badge>
+        <>
+            <div>
+                <Navbar />
+                <div className='max-w-7xl mx-auto my-10' style={{ display: "flex", alignItems: "center", gap: "30px" }}>
+                    <div className='flex items-center justify-between' >
+                        <img
+                            src={singleProduct?.photo}
+                            alt="Product"
+                            className="w-64 h-64 object-cover rounded-md"
+                            style={{ height: "80vh", width: "auto", padding: "30px", borderRadius: "50px" }}
+                        />
+
                     </div>
+                    <div style={{ display: "flex", flexDirection: "column", marginLeft: "90px", gap: "10px" }}>
+                        <div style={{ marginBottom: "50px" }}>
+                            <h1 className='font-bold text-xl'>{singleProduct?.productName}</h1>
+                            <p className='text-gray-600'>{singleProduct?.description}</p>
+                            <p className='text-gray-600 '>{singleProduct?.category}</p>
+                            <div style={{ display: "flex", gap: "10px", marginTop: "20px" }}>
+                                <Badge className="bg-blue-500">{singleProduct?.price} <i class="fa-solid fa-indian-rupee-sign"></i></Badge>
+                                <Badge className="bg-green-500">{singleProduct?.stock} in stock</Badge>
+
+                            </div>
+                        </div>
+                        <div style={{ display: "flex", gap: "30px" }}>
+                            <Button className="bg-[#7209b7]" onClick={isApplied ? null : applyProductHandler}>Add to Cart <FontAwesomeIcon icon={faShoppingCart} /></Button>
+                            <Button className="bg-red-700" onClick={() => navigate("/payment")}>Buy Now</Button>
+
+
+
+                        </div>
+                    </div>
+
+
                 </div>
-                <Button
-                onClick={isApplied ? null : applyProductHandler}
-                    disabled={isApplied}
-                    className={`rounded-lg ${isApplied ? 'bg-gray-600 cursor-not-allowed' : 'bg-[#7209b7] hover:bg-[#5f32ad]'}`}>
-                    {isApplied ? 'Already added' : 'Add'}
-                </Button>
             </div>
-            <h1 className='border-b-2 border-b-gray-300 font-medium py-4'>Job Description</h1>
-            <div className='my-4'>
-                <h1 className='font-bold my-1'>Role: <span className='pl-4 font-normal text-gray-800'>{singleProduct?.productName}</span></h1>
-                <h1 className='font-bold my-1'>Location: <span className='pl-4 font-normal text-gray-800'>{singleProduct?.productName}</span></h1>
-                <h1 className='font-bold my-1'>Description: <span className='pl-4 font-normal text-gray-800'>{singleProduct?.productName}</span></h1>
-                <h1 className='font-bold my-1'>Experience: <span className='pl-4 font-normal text-gray-800'>{singleProduct?.productName} yrs</span></h1>
-                <h1 className='font-bold my-1'>Salary: <span className='pl-4 font-normal text-gray-800'>{singleProduct?.productName}LPA</span></h1>
-                <h1 className='font-bold my-1'>Total Applicants: <span className='pl-4 font-normal text-gray-800'>{singleProduct?.applications?.length}</span></h1>
-                <h1 className='font-bold my-1'>Posted Date: <span className='pl-4 font-normal text-gray-800'>{singleProduct?.createdAt.split("T")[0]}</span></h1>
-            </div>
-        </div>
+        </>
     )
 }
 

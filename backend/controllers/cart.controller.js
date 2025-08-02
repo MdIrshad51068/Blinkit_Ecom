@@ -1,11 +1,11 @@
-import { Cart } from "../models/Cart.model.js";
+import { Cart } from "../models/cart.model.js";
 import { Product } from "../models/product.model.js";
 
 export const addtocart = async (req, res) => {
     try {
         const userId = req.id;
-        console.log("userId : ",userId);
         const productId = req.params.id;
+        console.log("aaaaaaaaaa", productId)
         if (!productId) {
             return res.status(400).json({
                 message: "product id is required.",
@@ -14,11 +14,12 @@ export const addtocart = async (req, res) => {
         };
         // check if the user has already applied for the job
         const existingproduct = await Cart.findOne({ product: productId, applicant: userId });
-
         if (existingproduct) {
+            existingproduct.count=existingproduct.count+1
+            await existingproduct.save();
             return res.status(400).json({
-                message: "You have already added",
-                success: false
+                message: "Added",
+                success: true
             });
         }
 
@@ -32,15 +33,16 @@ export const addtocart = async (req, res) => {
         }
         // create a new application
         const newcart = await Cart.create({
-            product:productId,
-            applicant:userId,
+            product: productId,
+            applicant: userId,
+            count:1,
         });
 
         product.carts.push(newcart._id);
         await product.save();
         return res.status(201).json({
-            message:"product added successfully.",
-            success:true
+            message: "product added successfully.",
+            success: true
         })
     } catch (error) {
         console.log(error);
@@ -49,24 +51,24 @@ export const addtocart = async (req, res) => {
 
 
 
-export const getCartProducts = async (req,res) => {
+export const getCartProducts = async (req, res) => {
     try {
         const userId = req.id;
-        console.log("xxxxxxx",req.id)
-        const products = await Cart.find({applicant:userId}).sort({createdAt:-1}).populate({
-            path:'product',
-            options:{sort:{createdAt:-1}}
+        console.log("xxxxxxx", req.id)
+        const products = await Cart.find({ applicant: userId }).sort({ createdAt: -1 }).populate({
+            path: 'product',
+            options: { sort: { createdAt: -1 } }
         });
-        
-        if(!products){
+
+        if (!products) {
             return res.status(404).json({
-                message:"No Product",
-                success:false
+                message: "No Product",
+                success: false
             })
         };
         return res.status(200).json({
             products,
-            success:true
+            success: true
         })
     } catch (error) {
         console.log(error);
@@ -75,22 +77,22 @@ export const getCartProducts = async (req,res) => {
 
 
 // admin dekhega kitna user ne apply kiya hai
-export const getcustomerOfproducts = async (req,res) => {
+export const getcustomerOfproducts = async (req, res) => {
     try {
         const productId = req.params.id;
-        const product = await Cart.findById(productId).sort({createdAt:-1}).populate({
-                path:'applicant'
+        const product = await Cart.findById(productId).sort({ createdAt: -1 }).populate({
+            path: 'applicant'
         });
 
-        if(!product){
+        if (!product) {
             return res.status(404).json({
-                message:'product not found.',
-                success:false
+                message: 'product not found.',
+                success: false
             })
         };
         return res.status(200).json({
-            product, 
-            succees:true
+            product,
+            succees: true
         });
     } catch (error) {
         console.log(error);
@@ -98,23 +100,23 @@ export const getcustomerOfproducts = async (req,res) => {
 }
 
 
-export const updateStatus = async (req,res) => {
+export const updateStatus = async (req, res) => {
     try {
-        const {status} = req.body;
+        const { status } = req.body;
         const productId = req.params.id;
-        if(!status){
+        if (!status) {
             return res.status(400).json({
-                message:'status is required',
-                success:false
+                message: 'status is required',
+                success: false
             })
         };
 
         // find the application by applicantion id
         const product = await Cart.findOne({ _id: productId });
-        if(!product){
+        if (!product) {
             return res.status(404).json({
-                message:"product not found.",
-                success:false
+                message: "product not found.",
+                success: false
             })
         };
 
@@ -123,11 +125,42 @@ export const updateStatus = async (req,res) => {
         await product.save();
 
         return res.status(200).json({
-            message:"Status updated successfully.",
-            success:true
+            message: "Status updated successfully.",
+            success: true
         });
 
     } catch (error) {
         console.log(error);
     }
 }
+
+
+
+export const removeProductFromCart = async (req, res) => {
+  try {
+    const userId = req.id;
+    const productId = req.params.id;
+
+    // Remove the product from the user's cart
+    const cartItem = await Cart.findOneAndDelete({ applicant: userId, product: productId });
+
+    if (!cartItem) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found in cart",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Product removed from cart successfully",
+    });
+
+  } catch (error) {
+    console.error("Error removing product from cart:", error);
+    res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+};
