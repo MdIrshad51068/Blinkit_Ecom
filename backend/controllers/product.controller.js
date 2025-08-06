@@ -20,18 +20,12 @@ export const postproduct = async (req, res) => {
         success: false,
       });
     }
-
-
-
     if (!fileUri) {
       return res.status(400).json({
         message: "Product image is required.",
         success: false,
       });
     }
-
-
-
     const createdProduct = await Product.create({
       productName,
       description,
@@ -41,7 +35,6 @@ export const postproduct = async (req, res) => {
       created_by: userId,
       photo: cloudResponse.secure_url,
     });
-
     return res.status(201).json({
       message: "New product created successfully.",
       product: createdProduct,
@@ -55,6 +48,7 @@ export const postproduct = async (req, res) => {
     });
   }
 };
+
 
 
 
@@ -83,6 +77,10 @@ export const getAllproducts = async (req, res) => {
     console.log(error);
   }
 }
+
+
+
+
 // student
 export const getproductById = async (req, res) => {
   try {
@@ -108,24 +106,4 @@ export const getproductById = async (req, res) => {
     });
   }
 }
-// admin kitne job create kra hai abhi tk
-export const getAdminproducts = async (req, res) => {
-  try {
-    const adminId = req.id;
-    const products = await Product.find({ created_by: adminId }).sort({
-      createdAt: -1
-    });
-    if (!products) {
-      return res.status(404).json({
-        message: "products not found.",
-        success: false
-      })
-    };
-    return res.status(200).json({
-      products,
-      success: true
-    })
-  } catch (error) {
-    console.log(error);
-  }
-}
+

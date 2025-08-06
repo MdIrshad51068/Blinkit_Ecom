@@ -25,9 +25,7 @@ const Details = () => {
 
 
     
-
-
-    const applyProductHandler = async () => {
+const applyProductHandler = async () => {
         try {
             const res = await axios.get(`${Cart_API_END_POINT}/apply/${productId}`, { withCredentials: true });
 
@@ -43,6 +41,8 @@ const Details = () => {
             toast.error(error.response.data.message);
         }
     }
+
+    
 
     useEffect(() => {
         const fetchSingleProduct = async () => {

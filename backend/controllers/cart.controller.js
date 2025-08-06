@@ -80,25 +80,33 @@ export const getCartProducts = async (req, res) => {
 export const getcustomerOfproducts = async (req, res) => {
     try {
         const productId = req.params.id;
-        const product = await Cart.findById(productId).populate({
+
+        const carts = await Cart.find({ product: productId }).populate({
             path: 'applicant'
         });
-        console.log(product)
 
-        if (!product) {
+        if (!carts || carts.length === 0) {
             return res.status(404).json({
-                message: 'product not found.',
+                message: 'No customers found for this product.',
                 success: false
-            })
-        };
+            });
+        }
+
+        const customers = carts.map(cart => cart.applicant);
+
         return res.status(200).json({
-            product,
+            customers,
             success: true
         });
     } catch (error) {
         console.log(error);
+        return res.status(500).json({
+            message: 'Server error.',
+            success: false
+        });
     }
 }
+
 
 
 export const updateStatus = async (req, res) => {
@@ -176,7 +184,6 @@ export const removedtocart = async (req, res) => {
     try {
         const userId = req.id;
         const productId = req.params.id;
-        console.log("aaaaaaaaaa", productId)
         if (!productId) {
             return res.status(400).json({
                 message: "product id is required.",
@@ -210,3 +217,24 @@ export const removedtocart = async (req, res) => {
         console.log(error);
     }
 };
+
+export const getSingleCartProducts = async (req, res) => {
+    try {
+        const productId = req.params.id;
+        console.log("xxxxxxx", req.params.id)
+        const products = await Cart.find({ applicant: productId });
+
+        if (!products) {
+            return res.status(404).json({
+                message: "No Product",
+                success: false
+            })
+        };
+        return res.status(200).json({
+            products,
+            success: true
+        })
+    } catch (error) {
+        console.log(error);
+    }
+}

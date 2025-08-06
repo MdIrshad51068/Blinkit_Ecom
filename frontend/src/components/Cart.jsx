@@ -66,6 +66,21 @@ const Cart = () => {
     }
   };
 
+  const cartProduct = async (productId) => {
+    try {
+      const res = await axios.get(`${Cart_API_END_POINT}/get/${productId}`, {
+        withCredentials: true,
+      });
+
+      if (res.data.success) {
+        toast.success(res.data.message);
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Error reducing quantity");
+    }
+  };
+
+
   return (
     <>
       <Navbar />
@@ -78,6 +93,7 @@ const Cart = () => {
               ) : (
                 allAppliedProducts.map((item) => (
                   <div key={item._id} className="p-4 border-b" style={{ display: "flex", alignItems: "center", gap: "50px", height: "20vh" }}>
+
                     <div>
                       <img
                         src={item.product?.photo}
@@ -99,6 +115,11 @@ const Cart = () => {
                           ? item.product.price * item.count
                           : "Unnamed Product"}{" "}
                         <i className="fa-solid fa-indian-rupee-sign"></i>
+                      </Badge>
+                      <Badge className="h-6 w-14 ml-10 p-4">
+                                            {const hello=cartProduct(item.product._id)
+                                            hello.stetus;}
+
                       </Badge>
                     </div>
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "30px" }}>

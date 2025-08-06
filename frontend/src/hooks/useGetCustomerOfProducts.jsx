@@ -14,13 +14,12 @@ const useGetCustomerOfProducts = () => {
 
     const fetchAppliedProducts = async () => {
       try {
-        const res = await axios.get(`${Cart_API_END_POINT}/${productID}/applicants`, {
+        const res = await axios.get(`${Cart_API_END_POINT}/applicants/${productID}`, {
           withCredentials: true,
         });
-console.log(res.data.success)
         if (res.data.success) {
           // ✅ Make sure this matches the structure from your backend
-          dispatch(setAllApplicantsOfProducts(res.data.applicant));
+          dispatch(setAllApplicantsOfProducts(res.data.customers));
         } else {
           console.warn("⚠️ API returned success: false", res.data.message);
         }
