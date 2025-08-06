@@ -24,10 +24,12 @@ const Details = () => {
     const navigate = useNavigate();
 
 
+    
+
+
     const applyProductHandler = async () => {
         try {
             const res = await axios.get(`${Cart_API_END_POINT}/apply/${productId}`, { withCredentials: true });
-
 
             if (res.data.success) {
                 setIsApplied(true); // Update the local state
@@ -87,7 +89,7 @@ const Details = () => {
                             </div>
                         </div>
                         <div style={{ display: "flex", gap: "30px" }}>
-                            <Button className="bg-[#7209b7]" onClick={isApplied ? null : applyProductHandler}>Add to Cart <FontAwesomeIcon icon={faShoppingCart} /></Button>
+                            <Button className="bg-[#7209b7]" onClick={isApplied ? applyProductHandler : applyProductHandler}>Add to Cart <FontAwesomeIcon icon={faShoppingCart} /></Button>
                             <Button className="bg-red-700" onClick={() => navigate("/payment")}>Buy Now</Button>
 
 

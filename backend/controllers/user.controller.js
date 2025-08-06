@@ -109,7 +109,7 @@ export const logout = async (req, res) => {
         console.log(error);
     }
 }
-export const updateProfile = async (req, res) => {
+export const updateProfile = async (req,         res) => {
     try {
         const { firstname,lastname, phoneNumber, address } = req.body;
         

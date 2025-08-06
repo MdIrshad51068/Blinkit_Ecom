@@ -15,7 +15,7 @@ export const addtocart = async (req, res) => {
         // check if the user has already applied for the job
         const existingproduct = await Cart.findOne({ product: productId, applicant: userId });
         if (existingproduct) {
-            existingproduct.count=existingproduct.count+1
+            existingproduct.count = existingproduct.count + 1
             await existingproduct.save();
             return res.status(400).json({
                 message: "Added",
@@ -35,7 +35,7 @@ export const addtocart = async (req, res) => {
         const newcart = await Cart.create({
             product: productId,
             applicant: userId,
-            count:1,
+            count: 1,
         });
 
         product.carts.push(newcart._id);
@@ -80,9 +80,10 @@ export const getCartProducts = async (req, res) => {
 export const getcustomerOfproducts = async (req, res) => {
     try {
         const productId = req.params.id;
-        const product = await Cart.findById(productId).sort({ createdAt: -1 }).populate({
+        const product = await Cart.findById(productId).populate({
             path: 'applicant'
         });
+        console.log(product)
 
         if (!product) {
             return res.status(404).json({
@@ -92,7 +93,7 @@ export const getcustomerOfproducts = async (req, res) => {
         };
         return res.status(200).json({
             product,
-            succees: true
+            success: true
         });
     } catch (error) {
         console.log(error);
@@ -137,30 +138,75 @@ export const updateStatus = async (req, res) => {
 
 
 export const removeProductFromCart = async (req, res) => {
-  try {
-    const userId = req.id;
-    const productId = req.params.id;
+    try {
+        const userId = req.id;
+        const productId = req.params.id;
 
-    // Remove the product from the user's cart
-    const cartItem = await Cart.findOneAndDelete({ applicant: userId, product: productId });
+        // Remove the product from the user's cart
+        const cartItem = await Cart.findOneAndDelete({ applicant: userId, product: productId });
 
-    if (!cartItem) {
-      return res.status(404).json({
-        success: false,
-        message: "Product not found in cart",
-      });
+        if (!cartItem) {
+            return res.status(404).json({
+                success: false,
+                message: "Product not found in cart",
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Product removed from cart successfully",
+        });
+
+    } catch (error) {
+        console.error("Error removing product from cart:", error);
+        res.status(500).json({
+            success: false,
+            message: "Something went wrong",
+        });
     }
+};
 
-    res.status(200).json({
-      success: true,
-      message: "Product removed from cart successfully",
-    });
 
-  } catch (error) {
-    console.error("Error removing product from cart:", error);
-    res.status(500).json({
-      success: false,
-      message: "Something went wrong",
-    });
-  }
+
+
+
+
+
+export const removedtocart = async (req, res) => {
+    try {
+        const userId = req.id;
+        const productId = req.params.id;
+        console.log("aaaaaaaaaa", productId)
+        if (!productId) {
+            return res.status(400).json({
+                message: "product id is required.",
+                success: false
+            })
+        };
+        // check if the user has already applied for the job
+        const existingproduct = await Cart.findOne({ product: productId, applicant: userId });
+        if (existingproduct) {
+            if (existingproduct.count == 1) {
+                const cartItem = await Cart.findOneAndDelete({ applicant: userId, product: productId });
+                if (cartItem) {
+                    return res.status(404).json({
+                        success: true,
+                        message: "Removed",
+                    });
+                }
+            } else {
+                existingproduct.count = existingproduct.count - 1
+                await existingproduct.save();
+                return res.status(400).json({
+                    message: "Removed",
+                    success: true
+                });
+            }
+
+        }
+
+        
+    } catch (error) {
+        console.log(error);
+    }
 };

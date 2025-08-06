@@ -4,7 +4,7 @@ const productSlice = createSlice({
     name:"product",
     initialState:{
         allProducts:[],
-        allAdminProducts:[],
+        allApplicantsOfProducts:[],
         singleProduct:null, 
         searchProductByText:"",
         allAppliedProducts:[],
@@ -13,14 +13,14 @@ const productSlice = createSlice({
     },
     reducers:{
         // actions
-        setAllProducts:(state,action) => {
+        setAllProducts:(state,action) => {//---
             state.allProducts = action.payload;
         },
-        setSingleProduct:(state,action) => {
+        setSingleProduct:(state,action) => {//---
             state.singleProduct = action.payload;
         },
-        setAllAdminProducts:(state,action) => {
-            state.allAdminProducts = action.payload;
+        setAllApplicantsOfProducts:(state,action) => {
+            state.allApplicantsOfProducts = action.payload;
         },
         setSearchProductByText:(state,action) => {
             state.searchProductByText = action.payload;
@@ -28,10 +28,10 @@ const productSlice = createSlice({
         setAllAppliedProducts:(state,action) => {
             state.allAppliedProducts = action.payload;
         },
-        setSearchedQuery:(state,action) => {
+        setSearchedQuery:(state,action) => {//---
             state.searchedQuery = action.payload;
         },
-        setCount:(state,action) => {
+        setCount:(state,action) => {//----
             state.count = action.payload;
         }
     }
@@ -39,7 +39,7 @@ const productSlice = createSlice({
 export const {
     setAllProducts, 
     setSingleProduct, 
-    setAllAdminProducts,
+    setAllApplicantsOfProducts,
     setSearchProductByText, 
     setAllAppliedProducts,
     setSearchedQuery,

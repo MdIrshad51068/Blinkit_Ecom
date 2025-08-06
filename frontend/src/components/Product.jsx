@@ -6,19 +6,14 @@ import { Link, useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
-import { Cart_API_END_POINT, Product_API_END_POINT } from '@/utils/constant';
+import { Cart_API_END_POINT } from '@/utils/constant';
 import { toast } from 'sonner';
-import { setCount } from '@/redux/productSlice';
-import { useDispatch, useSelector } from 'react-redux';
 
 
 
 
 const Product = ({ product }) => {
     const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const { count } = useSelector(store => store.product);
-
 
 
     const applyProductHandler = async () => {
@@ -37,22 +32,7 @@ const Product = ({ product }) => {
     }
 
 
-    const counter = async () => {
-        try {
-            const res = await axios.get(`${Product_API_END_POINT}/get/${product?._id}`, { withCredentials: true });
-            if (res.data.success) {
-                if (res.data.product.carts.some(Cart => Cart.applicant === user?._id)) {// Ensure the state is in sync with fetched data
-                    count = count + 1;
-                    dispatch(setCount(count));
-                } else {
-                    dispatch(setCount(1));
-                }
-
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    }
+    
 
     return (
         <div className='p-5 rounded-md shadow-xl bg-white border border-gray-100' style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
@@ -80,7 +60,6 @@ const Product = ({ product }) => {
                     className="bg-[#7209b7]"
                     onClick={() => {
                         applyProductHandler();
-                        counter();
                     }}
 
                 >

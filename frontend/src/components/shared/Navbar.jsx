@@ -33,7 +33,7 @@ const Navbar = () => {
     return (
         <div className='bg-[#FAA613]'>
             <div className='flex items-center justify-between mx-auto max-w-7xl h-16'>
-                <div>
+                <div onClick={()=>navigate("/")}>
                     <h1 className='text-2xl font-bold'>take<span className='text-[#00802b]'>it</span></h1>
                 </div>
                 <div className='flex items-center gap-12'>
@@ -94,7 +94,7 @@ const Navbar = () => {
                                         <div className='flex flex-col my-2 text-gray-600'>
                                             {
                                                 user && user.role === 'customer' && (
-                                                    <div className='flex w-fit items-center gap-2 cursor-pointer'>
+                                                    <div className='flex w-fit items-center gap-2 cursor-pointer mt-6'>
                                                         <User2 />
                                                         <Button variant="link"> <Link to="/profile">View Profile</Link></Button>
 

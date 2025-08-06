@@ -1,16 +1,19 @@
 import React from 'react'
 import { Badge } from './ui/badge'
 import { useNavigate } from 'react-router-dom'
-// import { Avatar, AvatarImage } from './ui/avatar'
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
-// import { Button } from './ui/button';
+import { useSelector } from 'react-redux';
+
+
 
 
 const LatestProductCards = ({ product }) => {
+
+    const { user} = useSelector(store => store.auth);
+    const isOwner=user?.role === "owner"
+
     const navigate = useNavigate();
     return (
-        <div onClick={() => navigate(`/detail/${product._id}`)} className='p-5 rounded-md shadow-xl bg-white border border-gray-100 cursor-pointer' style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }} >
+        <div onClick={() =>isOwner?navigate(`/applicants/${product._id}`): navigate(`/detail/${product._id}`)} className='p-5 rounded-md shadow-xl bg-white border border-gray-100 cursor-pointer' style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }} >
             <div>
                 <img
                     src={product.photo}

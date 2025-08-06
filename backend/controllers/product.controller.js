@@ -8,6 +8,11 @@ export const postproduct = async (req, res) => {
   try {
     const { productName, description, price, category, stock } = req.body;
     const userId = req.id;
+    const file = req.file;
+    console.log("fileUri", file);
+    const fileUri = getDataUri(file);
+
+    const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
 
     if (!productName || !description || !price || !category || !stock) {
       return res.status(400).json({
@@ -16,15 +21,16 @@ export const postproduct = async (req, res) => {
       });
     }
 
-    if (!req.file) {
+
+
+    if (!fileUri) {
       return res.status(400).json({
         message: "Product image is required.",
         success: false,
       });
     }
 
-    const fileUri = getDataUri(req.file);
-    const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+
 
     const createdProduct = await Product.create({
       productName,
@@ -49,6 +55,9 @@ export const postproduct = async (req, res) => {
     });
   }
 };
+
+
+
 // student k liye
 export const getAllproducts = async (req, res) => {
   try {
@@ -80,10 +89,10 @@ export const getproductById = async (req, res) => {
     const productId = req.params.id;
 
     const product = await Product.findById(productId).populate({
-            path:'carts',
-            options:{sort:{createdAt:-1}}
-        });
-    console.log("ooooooooooo",product)
+      path: 'carts',
+      options: { sort: { createdAt: -1 } }
+    });
+    console.log("ooooooooooo", product)
 
     if (!product) {
       return res.status(404).json({

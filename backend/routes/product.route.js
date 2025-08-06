@@ -11,7 +11,7 @@ import {
 const router = express.Router();
 
 // ✅ POST product with auth and image upload
-router.post("/post", isAuthenticated, singleUpload, postproduct);
+router.post("/post", isAuthenticated, singleUpload, postproduct);//------
 
 // ✅ Other product routes
 router.get("/get", getAllproducts);//-----
