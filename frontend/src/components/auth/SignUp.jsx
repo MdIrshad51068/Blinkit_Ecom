@@ -21,7 +21,7 @@ const Signup = () => {
         address:"",
         phoneNumber: "",
         password: "",
-        role: "",
+        role: "costomer",
         file: ""
     });
     const { loading, user } = useSelector(store => store.auth);
@@ -43,7 +43,6 @@ const Signup = () => {
         formData.append("address", input.address);
         formData.append("phoneNumber", input.phoneNumber);
         formData.append("password", input.password);
-        formData.append("role", input.role);
         if (input.file) {
             formData.append("file", input.file);
         }
@@ -138,30 +137,7 @@ const Signup = () => {
                         />
                     </div>
                     <div className='flex items-center justify-between'>
-                        <RadioGroup className="flex items-center gap-4 my-5">
-                            <div className="flex items-center space-x-2">
-                                <Input
-                                    type="radio"
-                                    name="role"
-                                    value="customer"
-                                    checked={input.role === 'customer'}
-                                    onChange={changeEventHandler}
-                                    className="cursor-pointer"
-                                />
-                                <Label htmlFor="r1">customer</Label>
-                            </div>
-                            <div className="flex items-center space-x-2">
-                                <Input
-                                    type="radio"
-                                    name="role"
-                                    value="owner"
-                                    checked={input.role === 'owner'}
-                                    onChange={changeEventHandler}
-                                    className="cursor-pointer"
-                                />
-                                <Label htmlFor="r2">owner</Label>
-                            </div>
-                        </RadioGroup>
+                        
                         <div className='flex items-center gap-2'>
                             <Label>Profile</Label>
                             <Input
