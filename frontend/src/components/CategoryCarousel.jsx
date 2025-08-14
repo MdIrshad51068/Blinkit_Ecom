@@ -1,17 +1,21 @@
 import React from 'react';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from './ui/carousel';
-import { Button } from './ui/button';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setSearchedQuery } from '@/redux/productSlice';
+import pantImg from '../assets/pant.png';
+import shirtImg from '../assets/shirtImg.png';
+import jeansImg from '../assets/jeansImg.png';
+import kurtaImg from '../assets/kurtaImg.png';
+import pajamaImg from '../assets/pajamaImg.png';
 
-const category = [
-    "Pant",
-    "shirt",
-    "jeans",
-    "kurta",
-    "pajama"
-]
+const category= [
+    {  img: pantImg },
+    {  img: shirtImg },
+    {  img: jeansImg },
+    {  img: kurtaImg },
+    {  img: pajamaImg }
+];
 
 
 
@@ -28,17 +32,17 @@ const { user } = useSelector(store => store.auth);
 
     return (
         <div>
-            <Carousel className="w-full max-w-xl mx-auto my-20">
+            <Carousel className="w-full max-w-320 mx-auto my-20">
+                <CarouselPrevious />
                 <CarouselContent>
                     {
                         category.map((cat, index) => (
                             <CarouselItem className="md:basis-1/3 lg-basis-1/3">
-                                <Button onClick={() => { if (user) { searchJobHandler(cat) } else { navigate("/request") } }} variant="outline" className="rounded-full  bg-[#00802b] text-white">{cat}</Button>
+                                <img src={cat.img}  className="w-200 h-140 object-cover mb-2" onClick={() => { if (user) { searchJobHandler(cat) } else { navigate("/request") } }} variant="outline" />
                             </CarouselItem>
                         ))
                     }
-                </CarouselContent>
-                <CarouselPrevious />
+                </CarouselContent> 
                 <CarouselNext />
             </Carousel>
         </div>
