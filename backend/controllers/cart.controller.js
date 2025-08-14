@@ -111,8 +111,12 @@ export const getcustomerOfproducts = async (req, res) => {
 
 export const updateStatus = async (req, res) => {
     try {
-        const { status } = req.body;
-        const productId = req.params.id;
+        const { status ,userid,productid} = req.body;
+        console.log(status,userid,productid)
+
+        // const productId = req.params.id;
+        // console.log(productId)
+
         if (!status) {
             return res.status(400).json({
                 message: 'status is required',
@@ -121,7 +125,8 @@ export const updateStatus = async (req, res) => {
         };
 
         // find the application by applicantion id
-        const product = await Cart.findOne({ _id: productId });
+        const product = await Cart.findOne({ product: productid, applicant: userid});
+        console.log("jjjjj",product)
         if (!product) {
             return res.status(404).json({
                 message: "product not found.",
@@ -218,23 +223,3 @@ export const removedtocart = async (req, res) => {
     }
 };
 
-export const getSingleCartProducts = async (req, res) => {
-    try {
-        const productId = req.params.id;
-        console.log("xxxxxxx", req.params.id)
-        const products = await Cart.find({ applicant: productId });
-
-        if (!products) {
-            return res.status(404).json({
-                message: "No Product",
-                success: false
-            })
-        };
-        return res.status(200).json({
-            products,
-            success: true
-        })
-    } catch (error) {
-        console.log(error);
-    }
-}

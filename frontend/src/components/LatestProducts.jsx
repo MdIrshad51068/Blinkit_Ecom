@@ -18,7 +18,7 @@ const LatestProducts = () => {
                             allProducts.length <= 0
                                 ? <span>No Product Available</span>
                                 : allProducts.map((product) => (
-                                    <LatestProductCards key={product._id} product={product} />
+                                    <LatestProductCards  product={product} />
                                 ))
                         }
                     </div>

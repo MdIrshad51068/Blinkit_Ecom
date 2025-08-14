@@ -13,6 +13,7 @@ const LatestProductCards = ({ product }) => {
     const isOwner = user?.role === "owner"
 
     const navigate = useNavigate();
+    console.log("kkkkkkkkkkk",product)
     return (
         <div onClick={() => isOwner ? navigate(`/applicants/${product._id}`) : navigate(`/detail/${product._id}`)} className='p-5 rounded-md shadow-xl bg-white border border-gray-100 cursor-pointer' style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }} >
             <div>

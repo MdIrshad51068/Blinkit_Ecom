@@ -6,11 +6,14 @@ import connectDB from "./utils/db.js";
 import userRoute from "./routes/user.route.js";
 import productRoute from "./routes/product.route.js";
 import cartRoute from "./routes/cart.route.js";
+import path from "path";//just for render
+
 
 dotenv.config({});
 
 const app = express()
 
+const _dirname=path.resolve();//just for render
 
 
 // middleware
@@ -32,7 +35,10 @@ app.use("/api/v1/user", userRoute);
 app.use("/api/v1/product", productRoute);
 app.use("/api/v1/cart", cartRoute);
 
-
+app.use(express.static(path.join(_dirname,"frontend/dist")))
+app.get(/.*/,(_,res)=>{
+    res.sendFile(path.resolve(_dirname,"frontend","dist","index.html"))
+})
 
 app.listen(PORT,()=>{
     connectDB();
