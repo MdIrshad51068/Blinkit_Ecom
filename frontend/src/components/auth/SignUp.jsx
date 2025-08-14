@@ -21,7 +21,7 @@ const Signup = () => {
         address:"",
         phoneNumber: "",
         password: "",
-        role: "costomer",
+        role: "customer",
         file: ""
     });
     const { loading, user } = useSelector(store => store.auth);
