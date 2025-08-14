@@ -43,6 +43,7 @@ const Signup = () => {
         formData.append("address", input.address);
         formData.append("phoneNumber", input.phoneNumber);
         formData.append("password", input.password);
+        formData.append("role", input.role);
         if (input.file) {
             formData.append("file", input.file);
         }
@@ -137,7 +138,7 @@ const Signup = () => {
                         />
                     </div>
                     <div className='flex items-center justify-between'>
-                        
+                       
                         <div className='flex items-center gap-2'>
                             <Label>Profile</Label>
                             <Input
