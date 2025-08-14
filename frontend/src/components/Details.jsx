@@ -35,13 +35,11 @@ const Details = () => {
 
       if (res.data.success) {
         setIsApplied(true);
-
         const updatedSingleProduct = {
           ...singleProduct,
-          carts: [...(singleProduct?.carts || []), { applicant: user?._id }],
+          carts: [...(singleProduct?.carts || []), { applicant: user?._id }]
         };
         dispatch(setSingleProduct(updatedSingleProduct));
-
         toast.success(res.data.message);
       }
     } catch (error) {
@@ -57,10 +55,8 @@ const Details = () => {
           `${Product_API_END_POINT}/get/${productId}`,
           { withCredentials: true }
         );
-
         if (res.data.success) {
           dispatch(setSingleProduct(res.data.product));
-
           setIsApplied(
             res.data.product?.carts?.some(
               cart => cart.applicant === user?._id
@@ -71,16 +67,11 @@ const Details = () => {
         console.log(error);
       }
     };
-
     fetchSingleProduct();
   }, [productId, dispatch, user?._id]);
 
   if (!singleProduct) {
-    return (
-      <div className="text-center py-10">
-        <p>Please SignUp First .......</p>
-      </div>
-    );
+    return <p className="text-center mt-10">Loading...</p>;
   }
 
   return (
@@ -99,7 +90,7 @@ const Details = () => {
               height: '80vh',
               width: 'auto',
               padding: '30px',
-              borderRadius: '50px',
+              borderRadius: '50px'
             }}
           />
         </div>
@@ -109,16 +100,14 @@ const Details = () => {
             display: 'flex',
             flexDirection: 'column',
             marginLeft: '90px',
-            gap: '10px',
+            gap: '10px'
           }}
         >
           <div style={{ marginBottom: '50px' }}>
             <h1 className="font-bold text-xl">{singleProduct?.productName}</h1>
             <p className="text-gray-600">{singleProduct?.description}</p>
             <p className="text-gray-600">{singleProduct?.category}</p>
-            <div
-              style={{ display: 'flex', gap: '10px', marginTop: '20px' }}
-            >
+            <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
               <Badge className="bg-blue-500">
                 {singleProduct?.price}{' '}
                 <i className="fa-solid fa-indian-rupee-sign"></i>
@@ -130,10 +119,7 @@ const Details = () => {
           </div>
 
           <div style={{ display: 'flex', gap: '30px' }}>
-            <Button
-              className="bg-[#7209b7]"
-              onClick={applyProductHandler}
-            >
+            <Button className="bg-[#7209b7]" onClick={applyProductHandler}>
               Add to Cart <FontAwesomeIcon icon={faShoppingCart} />
             </Button>
             <Button
