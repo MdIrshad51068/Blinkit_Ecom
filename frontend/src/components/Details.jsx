@@ -12,6 +12,26 @@ import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import Navbar from './shared/Navbar';
 
 const Details = () => {
+
+    useEffect(() => {
+        const fetchSingleProduct = async () => {
+            try {
+                const res = await axios.get(`${Product_API_END_POINT}/get/${productId}`, { withCredentials: true });
+                if (res.data.success) {
+                    console.log("lllllllll", res.data.product);
+                    dispatch(setSingleProduct(res.data.product));
+
+                    setIsApplied(res.data.product.carts.some(Cart => Cart.applicant === user?._id)) // Ensure the state is in sync with fetched data
+                    console.log("hhhhh", res.data.product.carts.some(Cart => Cart.applicant === user?._id));
+
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchSingleProduct();
+    }, [productId, dispatch, user?._id]);
+
     const { singleProduct } = useSelector(store => store.product);
     const { user } = useSelector(store => store.auth);
     const isIntiallyApplied = singleProduct?.carts?.some(cart => cart.applicant === user?._id) || false;
@@ -43,24 +63,7 @@ const applyProductHandler = async () => {
 
     
 
-    useEffect(() => {
-        const fetchSingleProduct = async () => {
-            try {
-                const res = await axios.get(`${Product_API_END_POINT}/get/${productId}`, { withCredentials: true });
-                if (res.data.success) {
-                    console.log("lllllllll", res.data.product);
-                    dispatch(setSingleProduct(res.data.product));
-
-                    setIsApplied(res.data.product.carts.some(Cart => Cart.applicant === user?._id)) // Ensure the state is in sync with fetched data
-                    console.log("hhhhh", res.data.product.carts.some(Cart => Cart.applicant === user?._id));
-
-                }
-            } catch (error) {
-                console.log(error);
-            }
-        }
-        fetchSingleProduct();
-    }, [productId, dispatch, user?._id]);
+    
 
     return (
         <>
