@@ -14,8 +14,11 @@ import Navbar from './shared/Navbar';
 const Details = () => {
     const { singleProduct } = useSelector(store => store.product);
     const { user } = useSelector(store => store.auth);
-    const isIntiallyApplied = singleProduct.carts.some(Cart => Cart.applicant === user?._id) || false;
-    console.log("hello", singleProduct?.carts?.some(Cart => Cart.applicant === user?._id))
+
+    // ✅ Safe check for carts
+    const isIntiallyApplied =
+        singleProduct?.carts?.some(cart => cart.applicant === user?._id) || false;
+
     const [isApplied, setIsApplied] = useState(isIntiallyApplied);
 
     const params = useParams();
@@ -23,43 +26,53 @@ const Details = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-
-    
-const applyProductHandler = async () => {
+    const applyProductHandler = async () => {
         try {
-            const res = await axios.get(`${Cart_API_END_POINT}/apply/${productId}`, { withCredentials: true });
+            const res = await axios.get(
+                `${Cart_API_END_POINT}/apply/${productId}`,
+                { withCredentials: true }
+            );
 
             if (res.data.success) {
                 setIsApplied(true); // Update the local state
-                const updatedSingleProduct = { ...singleProduct, carts: [...singleProduct.carts, { applicant: user?._id }] }
-                dispatch(setSingleProduct(updatedSingleProduct)); // helps us to real time UI update
-                toast.success(res.data.message);
 
+                // ✅ Prevent crash if carts is null
+                const updatedSingleProduct = {
+                    ...singleProduct,
+                    carts: [...(singleProduct?.carts ?? []), { applicant: user?._id }]
+                };
+
+                dispatch(setSingleProduct(updatedSingleProduct)); 
+                toast.success(res.data.message);
             }
         } catch (error) {
             console.log(error);
-            toast.error(error.response.data.message);
+            toast.error(error.response?.data?.message || "Something went wrong");
         }
-    }
-
-    
+    };
 
     useEffect(() => {
         const fetchSingleProduct = async () => {
             try {
-                const res = await axios.get(`${Product_API_END_POINT}/get/${productId}`, { withCredentials: true });
+                const res = await axios.get(
+                    `${Product_API_END_POINT}/get/${productId}`,
+                    { withCredentials: true }
+                );
+
                 if (res.data.success) {
-                    console.log("lllllllll", res.data.product);
                     dispatch(setSingleProduct(res.data.product));
 
-                    setIsApplied(res.data.product.carts.some(Cart => Cart.applicant === user?._id)) // Ensure the state is in sync with fetched data
-                    console.log("hhhhh", res.data.product.carts.some(Cart => Cart.applicant === user?._id));
-
+                    // ✅ Safe check
+                    setIsApplied(
+                        res.data.product?.carts?.some(
+                            cart => cart.applicant === user?._id
+                        ) || false
+                    );
                 }
             } catch (error) {
                 console.log(error);
             }
-        }
+        };
         fetchSingleProduct();
     }, [productId, dispatch, user?._id]);
 
@@ -68,36 +81,39 @@ const applyProductHandler = async () => {
             <div>
                 <Navbar />
                 <div className='max-w-7xl mx-auto my-10' style={{ display: "flex", alignItems: "center", gap: "30px" }}>
-                    <div className='flex items-center justify-between' >
+                    <div className='flex items-center justify-between'>
                         <img
                             src={singleProduct?.photo}
                             alt="Product"
                             className="w-64 h-64 object-cover rounded-md"
                             style={{ height: "80vh", width: "auto", padding: "30px", borderRadius: "50px" }}
                         />
-
                     </div>
+
                     <div style={{ display: "flex", flexDirection: "column", marginLeft: "90px", gap: "10px" }}>
                         <div style={{ marginBottom: "50px" }}>
                             <h1 className='font-bold text-xl'>{singleProduct?.productName}</h1>
                             <p className='text-gray-600'>{singleProduct?.description}</p>
-                            <p className='text-gray-600 '>{singleProduct?.category}</p>
+                            <p className='text-gray-600'>{singleProduct?.category}</p>
                             <div style={{ display: "flex", gap: "10px", marginTop: "20px" }}>
-                                <Badge className="bg-blue-500">{singleProduct?.price} <i class="fa-solid fa-indian-rupee-sign"></i></Badge>
-                                <Badge className="bg-green-500">{singleProduct?.stock} in stock</Badge>
-
+                                <Badge className="bg-blue-500">
+                                    {singleProduct?.price} <i className="fa-solid fa-indian-rupee-sign"></i>
+                                </Badge>
+                                <Badge className="bg-green-500">
+                                    {singleProduct?.stock} in stock
+                                </Badge>
                             </div>
                         </div>
+
                         <div style={{ display: "flex", gap: "30px" }}>
-                            <Button className="bg-[#7209b7]" onClick={isApplied ? applyProductHandler : applyProductHandler}>Add to Cart <FontAwesomeIcon icon={faShoppingCart} /></Button>
-                            <Button className="bg-red-700" onClick={() => navigate("/payment")}>Buy Now</Button>
-
-
-
+                            <Button className="bg-[#7209b7]" onClick={applyProductHandler}>
+                                {isApplied ? "Added to Cart" : "Add to Cart"} <FontAwesomeIcon icon={faShoppingCart} />
+                            </Button>
+                            <Button className="bg-red-700" onClick={() => navigate("/payment")}>
+                                Buy Now
+                            </Button>
                         </div>
                     </div>
-
-
                 </div>
             </div>
         </>
