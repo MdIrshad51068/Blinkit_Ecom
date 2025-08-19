@@ -12,7 +12,7 @@ const router = express.Router();
 // ✅ POST product with auth and image upload
 router.post("/post", isAuthenticated, singleUpload, postproduct);//------
 router.get("/get", getAllproducts);//-----
-router.get("/get/:id", isAuthenticated, getproductById); //-----
+router.get("/get/:id", getproductById); //-----
 
 export default router;
 
