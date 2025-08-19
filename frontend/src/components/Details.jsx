@@ -15,7 +15,6 @@ const Details = () => {
     const { singleProduct } = useSelector(store => store.product);
     const { user } = useSelector(store => store.auth);
     const isIntiallyApplied = singleProduct?.carts?.some(cart => cart.applicant === user?._id) || false;
-    console.log("hello", singleProduct?.carts?.some(Cart => Cart.applicant === user?._id))
     const [isApplied, setIsApplied] = useState(isIntiallyApplied);
 
     const params = useParams();

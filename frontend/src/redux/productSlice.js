@@ -5,7 +5,7 @@ const productSlice = createSlice({
     initialState:{
         allProducts:[],
         allApplicantsOfProducts:[],
-        singleProduct:null, 
+        singleProduct:{}, 
         searchProductByText:"",
         allAppliedProducts:[],
         searchedQuery:"",
