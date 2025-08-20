@@ -21,7 +21,6 @@ const HeroSection = () => {
     return (
         <div className='text-center'>
             <div className='flex flex-col gap-5 my-10'>
-                <span className=' mx-auto px-4 py-2 rounded-full bg-gray-100 text-[#F83002] font-medium'>No. 1 Shoping Website</span>
                 <h1 className='text-5xl font-bold'>Search, Here To & <br /> Get Your <span className='text-[#00802b]'>Desire Products</span></h1>
                 <p>Discover a world of endless choices and unbeatable deals<br />shop smarter, faster, and better with us</p>
                 <div className='flex w-[40%] shadow-lg border border-gray-200 pl-3 rounded-full items-center gap-4 mx-auto'>
