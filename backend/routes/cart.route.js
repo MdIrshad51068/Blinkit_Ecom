@@ -4,7 +4,7 @@ import { addtocart, getcustomerOfproducts, getCartProducts, updateStatus ,remove
  
 const router = express.Router();
 
-router.route("/apply/:id").get(isAuthenticated, addtocart);//----
+router.route("/apply/:id").post(isAuthenticated, addtocart);//----
 router.route("/get").get(isAuthenticated, getCartProducts);//---
 router.route("/applicants/:id").get(isAuthenticated, getcustomerOfproducts);//----
 router.route("/status/update").post(isAuthenticated, updateStatus);

@@ -47,7 +47,7 @@ const Details = () => {
 
     const applyProductHandler = async () => {
         try {
-            const res = await axios.get(`${Cart_API_END_POINT}/apply/${productId}`, { withCredentials: true });
+            const res = await axios.post(`${Cart_API_END_POINT}/apply/${productId}`, { withCredentials: true });
 
             if (res.data.success) {
                 setIsApplied(true); // Update the local state
