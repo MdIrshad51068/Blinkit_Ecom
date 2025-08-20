@@ -5,7 +5,6 @@ export const addtocart = async (req, res) => {
     try {
         const userId = req.id;
         const productId = req.params.id;
-        console.log("aaaaaaaaaa", productId)
         if (!productId) {
             return res.status(400).json({
                 message: "product id is required.",
@@ -17,7 +16,7 @@ export const addtocart = async (req, res) => {
         if (existingproduct) {
             existingproduct.count = existingproduct.count + 1
             await existingproduct.save();
-            return res.status(400).json({
+            return res.status(200).json({
                 message: "Added",
                 success: true
             });
