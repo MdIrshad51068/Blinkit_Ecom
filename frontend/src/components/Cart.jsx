@@ -38,7 +38,7 @@ const Cart = () => {
 
   const applyProductHandler = async (productId) => {
     try {
-      const res = await axios.get(`${Cart_API_END_POINT}/apply/${productId}`, {
+      const res = await axios.post(`${Cart_API_END_POINT}/apply/${productId}`, {
         withCredentials: true,
       });
 
