@@ -18,7 +18,7 @@ const Product = ({ product }) => {
 
     const applyProductHandler = async () => {
         try {
-            const res = await axios.get(`${Cart_API_END_POINT}/apply/${product?._id}`, { withCredentials: true });
+            const res = await axios.post(`${Cart_API_END_POINT}/apply/${product?._id}`, { withCredentials: true });
             console.log("kkkkkkk", res.data)
             if (res.data.success) {
 
