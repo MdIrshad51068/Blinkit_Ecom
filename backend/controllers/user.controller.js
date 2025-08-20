@@ -6,10 +6,10 @@ import cloudinary from "../utils/cloudinary.js";
 
 export const register = async (req, res) => {
     try {
-        const { firstname,lastname, email , address , phoneNumber, password, role } = req.body;
-         
+        const { firstname, lastname, email, address, phoneNumber, password, role } = req.body;
+
         if (!firstname || !lastname || !email || !address || !phoneNumber || !password || !role) {
-            console.log(firstname , lastname ,email,address ,phoneNumber, password ,role);
+            console.log(firstname, lastname, email, address, phoneNumber, password, role);
             return res.status(400).json({
                 message: "Something is missing",
                 success: false
@@ -35,9 +35,9 @@ export const register = async (req, res) => {
             phoneNumber,
             password: hashedPassword,
             role,
-            profile:{
+            profile: {
                 address,
-                profilePhoto:cloudResponse.secure_url,
+                profilePhoto: cloudResponse.secure_url,
             }
         });
 
@@ -52,8 +52,8 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
     try {
         const { email, password } = req.body;
-        
-        if (!email || !password ) {
+
+        if (!email || !password) {
             return res.status(400).json({
                 message: "Something is missing",
                 success: false
@@ -73,7 +73,7 @@ export const login = async (req, res) => {
                 success: false,
             })
         };
-        
+
 
         const tokenData = {
             userId: user._id
@@ -90,7 +90,11 @@ export const login = async (req, res) => {
             profile: user.profile
         }
 
-        return res.status(200).cookie("token", token, { maxAge: 1 * 24 * 60 * 60 * 1000, httpsOnly: true, sameSite: 'strict' }).json({
+        return res.status(200).cookie("token", token, {
+            maxAge: 1 * 24 * 60 * 60 * 1000, httpOnly: true,
+            secure: true,
+            sameSite: "None",
+        }).json({
             message: `Welcome back ${user.firstname} ${user.lastname}`,
             user,
             success: true
@@ -109,10 +113,10 @@ export const logout = async (req, res) => {
         console.log(error);
     }
 }
-export const updateProfile = async (req,         res) => {
+export const updateProfile = async (req, res) => {
     try {
-        const { firstname,lastname, phoneNumber, address } = req.body;
-        
+        const { firstname, lastname, phoneNumber, address } = req.body;
+
         const file = req.file;
         // cloudinary ayega idhar
         const fileUri = getDataUri(file);
@@ -130,13 +134,13 @@ export const updateProfile = async (req,         res) => {
             })
         }
         // updating data
-        if(firstname) user.firstname = firstname
-        if(lastname) user.lastname = lastname
-        if(phoneNumber)  user.phoneNumber = phoneNumber
-        if(address) user.profile.address = address
-      
+        if (firstname) user.firstname = firstname
+        if (lastname) user.lastname = lastname
+        if (phoneNumber) user.phoneNumber = phoneNumber
+        if (address) user.profile.address = address
+
         // resume comes later here...
-        if(cloudResponse){
+        if (cloudResponse) {
             user.profile.profilePhoto = cloudResponse.secure_url // save the cloudinary url
             user.profile.resumeOriginalName = file.originalname // Save the original file name
         }
@@ -149,14 +153,14 @@ export const updateProfile = async (req,         res) => {
             firstname: user.firstname,
             lastname: user.lastname,
             phoneNumber: user.phoneNumber,
-            bio:user.address,
+            bio: user.address,
             profile: user.profile
         }
 
         return res.status(200).json({
-            message:"Profile updated successfully.",
+            message: "Profile updated successfully.",
             user,
-            success:true
+            success: true
         })
     } catch (error) {
         console.log(error);
