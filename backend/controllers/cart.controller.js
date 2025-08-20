@@ -14,7 +14,7 @@ export const addtocart = async (req, res) => {
         // check if the user has already applied for the job
         const existingproduct = await Cart.findOne({ product: productId, applicant: userId });
         if (existingproduct) {
-            existingproduct.count = existingproduct.count + 1
+            existingproduct.count += 1;
             await existingproduct.save();
             return res.status(200).json({
                 message: "Added",
@@ -45,6 +45,10 @@ export const addtocart = async (req, res) => {
         })
     } catch (error) {
         console.log(error);
+        return res.status(500).json({
+            message: "Server error",
+            success: false
+        });
     }
 };
 
@@ -110,8 +114,8 @@ export const getcustomerOfproducts = async (req, res) => {
 
 export const updateStatus = async (req, res) => {
     try {
-        const { status ,userid,productid} = req.body;
-        console.log(status,userid,productid)
+        const { status, userid, productid } = req.body;
+        console.log(status, userid, productid)
 
         // const productId = req.params.id;
         // console.log(productId)
@@ -124,8 +128,8 @@ export const updateStatus = async (req, res) => {
         };
 
         // find the application by applicantion id
-        const product = await Cart.findOne({ product: productid, applicant: userid});
-        console.log("jjjjj",product)
+        const product = await Cart.findOne({ product: productid, applicant: userid });
+        console.log("jjjjj", product)
         if (!product) {
             return res.status(404).json({
                 message: "product not found.",
@@ -216,7 +220,7 @@ export const removedtocart = async (req, res) => {
 
         }
 
-        
+
     } catch (error) {
         console.log(error);
     }
